@@ -103,7 +103,7 @@ TRUE & FALSE #e
 #criando um dado
 ?sample
 sample(10)
-dado1 <- sample(x = 1:6 ,size = 1000000, replace = TRUE)
+dado1 <- sample(x = 1:6 ,size = 1000000, replace = TRUE) #replace=TRUE é pra quando vc tira, coloca dvolta
 dado1
 #dado1[dado1==3]
 sum(dado1 == 3)/1000000
