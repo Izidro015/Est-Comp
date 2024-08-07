@@ -108,3 +108,4 @@ dado1
 #dado1[dado1==3]
 sum(dado1 == 3)/1000000
 mean(dado1 == 3) #media que o 3 apareceu com relação aos 10000 lançamentos
+barplot(table(dado1))
