@@ -25,3 +25,7 @@ sum(homens$Survived == 1)
 
 pobre_homem <- homens[homens$Pclass == "3",]
 summary(pobre_homem)
+
+library(ggplot2)
+
+ggplot(data=homens, aes(x=Pclass,fill=Survived))+geom_bar()
