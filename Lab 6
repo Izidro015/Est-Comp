@@ -86,6 +86,4 @@ for(j in 1:nrow(teste)){
   classificacao[j] <- as.character(treinamento$species[order(distancias)[1]])
 }
 mean(classificacao == teste$species)
-classificacao[1:5]
-teste$species[1:5]
 ```
