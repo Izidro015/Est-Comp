@@ -16,6 +16,7 @@ O objetivo desse tutorial é criar um modelo de classificação que seja capaz d
 Vamo iniciar nosso trabalho lendo o pacote 'palmerpenguins' e salvando o conjunto em um objeto chamado 'pinguins'.
 ```{r}
 library(palmerpenguins)#lendo o pacote
+set.seed(1443)
 pinguins <- penguins
 str(pinguins)
 ```
@@ -70,4 +71,6 @@ for(k in 1:nrow(treinamento)){
   distancias[k] <- sqrt((teste$body_mass_g[1] - treinamento$body_mass_g[k])**2 + (teste$bill_length_mm[1] - treinamento$bill_length_mm[k])**2)
 }
 distancias
+treinamento$species[order(distancias)[1]]
+teste$species[1]
 ```
