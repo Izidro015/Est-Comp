@@ -74,3 +74,18 @@ distancias
 treinamento$species[order(distancias)[1]]
 teste$species[1]
 ```
+
+```{r}
+classificacao <- c()
+for(j in 1:nrow(teste)){
+  distancias <- c()
+  for(k in 1:nrow(treinamento)){
+    distancias[k] <- sqrt((teste$body_mass_g[j] - treinamento$body_mass_g[k])**2 + (teste$bill_length_mm[j] - treinamento$bill_length_mm[k])**2)
+  }
+  
+  classificacao[j] <- as.character(treinamento$species[order(distancias)[1]])
+}
+mean(classificacao == teste$species)
+classificacao[1:5]
+teste$species[1:5]
+```
