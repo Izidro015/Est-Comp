@@ -35,7 +35,6 @@ ggplot(data = df, aes(x = k, y = taxa_acerto))+
 library(class)
 library(ggplot2)
 
-
 n <- round(0.8*nrow(cancer))
 
 indices_treino <- sample(1:nrow(cancer), size = n, replace = FALSE)
@@ -54,8 +53,10 @@ for(k in 1:100){
   modelo <- knn(train = treino_padronizado, test = teste_padronizado, cl = classe_treino, k = k)
   taxa_acerto[k] <- mean(modelo == teste$diagnosis)
 }
+
 df <- data.frame(k = 1:100, taxa_acerto)
 ggplot(data = df, aes(x = k, y = taxa_acerto))+
   geom_line()
+
 mean(modelo==classe_teste)
 table(modelo, classe_teste)
