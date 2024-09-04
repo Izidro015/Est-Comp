@@ -53,4 +53,4 @@ tabelas <- html|>
   html_elements("table")|>
   html_table()
 
-tabelas[[3]]
+taxa <- tabelas[[3]]
