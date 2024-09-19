@@ -181,35 +181,129 @@ fim <- passeio(L)
 fim
 
 #(b)
-resultados <- c()
-for(j in 1:10000){
-  moeda <- c("cara", "coroa")
-  n <- 20
-  precipicio <- 0
-  passeio <- function(L){
-    if(L>precipicio & L<n){
-      while((L!=precipicio) & (L!=n)){
-        sorteio <- sample(moeda,size = 1)
-        if(sorteio == "cara"){
-          L <- L+1
-        }else{
-          L <- L-1
+passeio2 <- function(L){
+  resultados <- c()
+  for(j in 1:10000){
+    moeda <- c("cara", "coroa")
+    n <- 20
+    precipicio <- 0
+    passeio <- function(L){
+      if(L>precipicio & L<n){
+        while((L!=precipicio) & (L!=n)){
+          sorteio <- sample(moeda,size = 1)
+          if(sorteio == "cara"){
+            L <- L+1
+          }else{
+            L <- L-1
+          }
         }
-      }
-      if(L == n){
-        print("Luke chegou em casa, sua jornada acabou! A mimir ZZZ")
-        return(1)
+        if(L == n)
+          return(1)
+        else
+          return (0)
       }else{
-        print("Luke caiu no precipicio!!!")
-        return (0)
+        return("L precisa ser maior que zero e menor que 20")
       }
-    }else{
-      return("L precisa ser maior que zero e menor que 20")
     }
+    L <- 10               #defina aqui o valor de L
+    fim <- passeio(L)
+    resultados[j] <- c(fim)
   }
-  L <- 10               #defina aqui o valor de L
-  fim <- passeio(L)
-  resultados[i] <- c(fim)
+  resultados <- mean(resultados)
+  resultados
 }
-resultados <- mean(resultados)
-resultados
+L <- 10               #defina aqui o valor de L
+fim2 <- passeio2(L)
+fim2
+
+#(c)
+proporcao_L <- c()
+for(L in 1:19) {
+  proporcao_L[L] <- passeio2(L)
+}
+proporcao_L[L]
+barplot(height = proporcao_L, names.arg = 1:19,
+        main = "Proporção de vezes que Luke chegou em casa",
+        xlab = "Posição inicial", ylab = "Proporção")
+
+
+#Exercicio 11
+#(a)
+
+#(b)
+
+#(c)
+
+
+#Exercicio 12
+
+
+#Exercicio 13
+library(ggplot2)
+dados <- read.table(file = "dados.txt", header = TRUE, sep = ";")
+str(dados)
+#(a)
+ggplot(data = dados, mapping = aes(x = Genero)) +
+  geom_bar()
+#É possível notar que a maioria das vítimas eram mulheres, com uma diferença de frequência bem discrepante em relação às vítimas que eram homens.
+
+#(b)
+ggplot(data = dados, mapping = aes(x = Idade)) + 
+  geom_histogram(bins = 8) +
+  facet_wrap(~Genero)
+#O gráfico indica que a maioria das vítimas tinha entre 70 e 85 anos, independente de seu gênero.
+
+#(c)
+ggplot(data = dados, mapping = aes(y = Idade)) +
+  geom_boxplot()
+#O boxplot mostra que a maioria das vítimas tinha entre 70 e 85 anos, e, além disso, também é possível perceber que as vítimas mais novas tinham cerca de 55 anos, enquanto as mais velhas, 95. Poucas vítimas tinham menos que 55 anos.
+
+#(d)
+ggplot(data = dados, mapping = aes(x = LocalDaMorte)) +
+  geom_bar()
+#A maioria das vítimas, mais de 200, foram assassinadas em suas casas. Cerca de 10 morreram no hospital, enquanto aproximadamente 5 morreram na casa de repouso.
+
+#(e)
+ggplot(data = dados, mapping = aes(x = AnoDaMorte)) +
+  geom_bar()
+#O número de assassinatos foi crescendo conforme o passar das décadas, sendo a década de 1990 a que contém o maior número de casos. No ano de 1997, houve mais de 40 vítimas.
+
+#(f)
+# A maioria das vítimas de Harold Shipman eram idosos com idades entre 70 e 85 anos, sobretudo mulheres. Shipman geralmente cometia os assassinatos nas casas das vítimas. Além disso, entre as décadas de 1970 e 1990, houve um aumento significativo no número de casos, sendo 1997 o ano com o maior número de vítimas registrado.
+
+
+#Exercicio 14
+library(ggplot2)
+
+#(a)
+primatas <- read.table(file = "primatas.txt", header = TRUE, sep = ":")
+str(primatas)
+summary(primatas)
+
+#(b)
+ggplot(data = primatas, mapping = aes(x = especie)) +
+  geom_bar()
+ggplot(data = primatas, mapping = aes(x = genero)) +
+  geom_bar() +
+  facet_wrap(~especie)
+
+#(c)
+bonobos <- primatas[primatas$especie == "bonobo",]
+ggplot(data = bonobos, mapping = aes(x = altura, y = peso, col = genero)) +
+  geom_point()
+chimpanzes <- primatas[primatas$especie == "chimpanze",]
+ggplot(data = chimpanzes, mapping = aes(x = altura, y = peso, col = genero)) + 
+  geom_point()
+
+# (d)
+femeas <- primatas[primatas$genero == "femea",]
+ggplot(data = femeas, mapping = aes(x = altura, y = peso, col = especie)) +
+  geom_point()
+machos <- primatas[primatas$genero == "macho",]
+ggplot(data = machos, mapping = aes(x = altura, y = peso, col = especie)) +
+  geom_point()
+
+#(e)
+#A partir da análise dos gráficos, foi possível perceber que, independente da espécie, as fêmeas são menores e mais leves que os machos, sendo essa diferença bem mais acentuada entre os chimpanzés. Também é perceptível que os machos da espécie bonobo possuem peso semelhante às fêmeas da espécie chimpanzé, apesar de serem ligeiramente mais altos que essas fêmeas.
+
+#(f)
