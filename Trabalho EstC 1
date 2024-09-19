@@ -1,0 +1,215 @@
+#Exercicio 1
+#(a)
+x <- c(10:30)
+x
+
+#(b)
+y <- c(30:10)
+y
+
+#(c)
+z <- c(x,y)
+z
+
+
+#Exercicio 2
+?rep
+#Vê os termos replicados em um vetor
+?seq
+#Gera sequencias regulares
+
+#(a)
+vet1 <- rep(seq(2, 8, by = 2), 10)
+vet1
+
+#(b)
+vet2 <- c(vet1, 2)
+vet2
+
+
+#Exercicio 3
+#(a)
+n1 <- c(20:30)
+func <- n1^2 + 4*n1
+sum(func)
+
+#(b)
+n2 <- c(10:20)
+func <- ((3^(n2)) / (n2)) + (2^(n2) / (n2^2))
+sum(func)
+
+
+#Exercicio 4
+set.seed(1240)
+sorteio <- sample (x =1:100 , size = 40, replace = TRUE)
+sorteio
+
+#(a) Quantas bolas pares foram sorteadas?
+pares <- sorteio[sorteio%%2 == 0]
+pares <- sort(pares)
+pares
+
+#(b) Quantas bolas maiores do que 70 foram sorteadas?
+maiores_70 <- sorteio[sorteio > 70]
+maiores_70
+
+#(c) Em quais retiradas (posicoes) foram sorteadas as bolas impares?
+impares <- which(sorteio %% 2 == 1)
+impares
+
+
+#Exercicio 5
+sorteio <- c()
+cont <- 0
+set.seed(1337)
+while(cont < 2){
+  jogada <- sample (x = 1:6, size = 1, replace = TRUE)
+  sorteio <- c(sorteio,jogada)
+  if(jogada == 4){
+    cont <- cont + 1
+  }
+}
+#sorteio
+length(sorteio)
+
+
+#exercicio 6
+quantidades <- c()
+set.seed(1337)
+for (i in 1:10000) {
+  sorteio <- c()
+  cont <- 0
+  while (cont < 2) {
+    jogada <- sample(x = 1:6, size = 1, replace = TRUE)
+    sorteio <- c(sorteio, jogada)
+    if (jogada == 4) {
+      cont <- cont + 1
+    }
+  }
+  quantidades <- c(quantidades, length(sorteio))#numero de lançamentos
+}
+mean(quantidades)
+#R: cada experimento de aproximadamente 12 lançamentos para mostrar a face 4 duas vezes
+
+
+#Exercicio 7
+fibonacci <- function(n){
+  if (n < 3){
+    stop("Por favor, insira um valor de n maior ou igual a 3.")
+  }
+  fib_seq <- numeric(n)
+  fib_seq[1] <- 1
+  fib_seq[2] <- 1
+  for (i in 3:n) {
+    fib_seq[i] <- fib_seq[i-1] + fib_seq[i-2]
+  }
+  return(fib_seq)
+}
+fibonacci(10)
+
+
+#Exercicio 8
+resultados <- c()
+for(j in 1:10000){
+    sorteio <- sample(x = 1:5, size = 5, replace = FALSE)
+    if(any(sorteio == 1:5)){
+      resultados[j] <- 0
+    }else{
+      resultados[j] <- 1
+    }
+}
+resultados
+proporcao <- sum(resultados == 0)/10000
+proporcao
+
+
+#exercicio 9
+resultado <- c()
+for(i in 1:100000){
+  dado1 <- sample(x = 1:6, size = 1, replace = TRUE)
+  dado2 <- sample(x = 1:6, size = 1, replace = TRUE)
+  soma <- dado1 + dado2
+  if(soma == 7 || soma == 11)
+    resultado[i] <- 1
+  if(soma == 2 || soma == 3 || soma == 12)
+    resultado[i] <- 0
+  nova_soma <- 0
+  while((nova_soma != 7) & (nova_soma != soma)) {
+    dado_a <- sample(x = 1:6, size = 1, replace = TRUE)
+    dado_b <- sample(x = 1:6, size = 1, replace = TRUE)
+    nova_soma <- dado_a + dado_b
+    if(nova_soma == 7) {
+      resultado[i] <- 0     # perdeu
+    }
+    if(nova_soma == soma) {
+      resultado[i] <- 1     # ganhou
+    }
+  }
+}
+resultado <- sum(resultado == 1)/100000
+resultado
+
+
+#Exercicio 10
+#(a)
+moeda <- c("cara", "coroa")
+n <- 20
+precipicio <- 0
+passeio <- function(L){
+  if(L>precipicio & L<n){
+    while((L!=precipicio) & (L!=n)){
+      sorteio <- sample(moeda,size = 1)
+      if(sorteio == "cara"){
+        L <- L+1
+      }else{
+        L <- L-1
+      }
+    }
+    if(L == n){
+      print("Luke chegou em casa, sua jornada acabou! A mimir ZZZ")
+      return(1)
+    }else{
+      print("Luke caiu no precipicio!!!")
+      return (0)
+    }
+  }else{
+    return("L precisa ser maior que zero e menor que 20")
+  }
+}
+L <- 10               #defina aqui o valor de L
+fim <- passeio(L)
+fim
+
+#(b)
+resultados <- c()
+for(j in 1:10000){
+  moeda <- c("cara", "coroa")
+  n <- 20
+  precipicio <- 0
+  passeio <- function(L){
+    if(L>precipicio & L<n){
+      while((L!=precipicio) & (L!=n)){
+        sorteio <- sample(moeda,size = 1)
+        if(sorteio == "cara"){
+          L <- L+1
+        }else{
+          L <- L-1
+        }
+      }
+      if(L == n){
+        print("Luke chegou em casa, sua jornada acabou! A mimir ZZZ")
+        return(1)
+      }else{
+        print("Luke caiu no precipicio!!!")
+        return (0)
+      }
+    }else{
+      return("L precisa ser maior que zero e menor que 20")
+    }
+  }
+  L <- 10               #defina aqui o valor de L
+  fim <- passeio(L)
+  resultados[i] <- c(fim)
+}
+resultados <- mean(resultados)
+resultados
