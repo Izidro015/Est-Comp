@@ -48,15 +48,17 @@ sorteio
 pares <- sorteio[sorteio%%2 == 0]
 pares <- sort(pares)
 pares
+#R: 16 bolas pares foram sorteadas
 
 #(b) Quantas bolas maiores do que 70 foram sorteadas?
 maiores_70 <- sorteio[sorteio > 70]
 maiores_70
+#R: 12 bolas maiores que 70 foram sorteadas
 
 #(c) Em quais retiradas (posicoes) foram sorteadas as bolas impares?
 impares <- which(sorteio %% 2 == 1)
 impares
-
+#R: Nas posições 4  5  7  9 10 12 13 14 16 18 20 22 24 26 27 28 29 30 31 33 35 36 37 39
 
 #Exercicio 5
 sorteio <- c()
@@ -69,7 +71,6 @@ while(cont < 2){
     cont <- cont + 1
   }
 }
-#sorteio
 length(sorteio)
 
 
@@ -89,7 +90,7 @@ for (i in 1:10000) {
   quantidades <- c(quantidades, length(sorteio))#numero de lançamentos
 }
 mean(quantidades)
-#R: cada experimento de aproximadamente 12 lançamentos para mostrar a face 4 duas vezes
+#R: Cada experimento de aproximadamente 12 lançamentos para mostrar a face 4 duas vezes
 
 
 #Exercicio 7
@@ -292,6 +293,31 @@ proporcao4
 
 
 #Exercicio 12
+jogar_moeda <- function() {
+  moeda <- c("cara", "coroa")
+  steven <- c("cara", "coroa", "cara")
+  garnet <- c("cara", "cara", "coroa")
+  lance <- sample(moeda, size = 3, replace = TRUE) 
+  while (TRUE) {
+    if (all(lance == steven)) {
+      return("steven")
+    }else if (all(lance == garnet)) {
+      return("garnet")
+    }else{
+      novo_lancamento <- sample(moeda, size = 1, replace = TRUE)
+      lance <- c(lance[-1], novo_lancamento)
+    }
+  }
+}
+ganhador <- jogar_moeda()
+ganhador
+resultados <- character(10000)
+for (i in 1:10000) {
+  resultados[i] <- jogar_moeda()
+}
+proporcao_garnet <- mean(resultados == "garnet")
+proporcao_garnet
+#R: A média de vitórias da Garnet é aproximadamente 67%, ou seja, a sequência escolhida por ela é matematicamente mais provável de acontecer em relação a sequência do Steven.
 
 
 
@@ -334,8 +360,7 @@ ggplot(data = dados, mapping = aes(x = AnoDaMorte)) +
 library(ggplot2)
 
 #(a)
-setwd("D:/Na UFU")
-primatas <- read.table(file = "primatas.txt", header = TRUE, sep = ":")
+primatas <- read.table(file = "primatas (1).txt", header = TRUE, sep = ":")
 str(primatas)
 summary(primatas)
 
@@ -363,6 +388,34 @@ ggplot(data = machos, mapping = aes(x = altura, y = peso, col = especie)) +
   geom_point()
 
 #(e)
-#A partir da análise dos gráficos, foi possível perceber que, independente da espécie, as fêmeas são menores e mais leves que os machos, sendo essa diferença bem mais acentuada entre os chimpanzés. Também é perceptível que os machos da espécie bonobo possuem peso semelhante às fêmeas da espécie chimpanzé, apesar de serem ligeiramente mais altos que essas fêmeas.
+#A partir da análise dos gráficos, foi possível perceber que, nos chimpanzés, as fêmeas são menores e mais leves que os machos, ja nos bonobos, podemos definir que o peso é bem definido entre machos e fêmeas, ja a altura os machos tendem a ter uma altura maior que as fêmeas. Também é perceptível que os machos da espécie bonobo possuem peso semelhante às fêmeas da espécie chimpanzé, apesar de serem ligeiramente mais altos que essas fêmeas.
 
 #(f)
+primatas <- primatas[sample(nrow(primatas)),]
+n <- round(0.8*nrow(primatas))
+treino_primatas<- primatas[(1:n),]
+teste_primatas <- primatas[-(1:n),]
+ggplot(data = treino_primatas, mapping = aes(x = altura, y = peso, col = genero))+
+  geom_point()+
+  facet_wrap(~especie)
+
+resultado <- c()
+
+for(i in 1:nrow(teste_primatas)){
+  if(all(teste_primatas$genero[i] == "macho")){
+    if(teste_primatas$peso[i] >= 55){
+      resultado[i] <- "chimpanze"
+    }else{
+      resultado[i] <- "bonobo"
+    }
+  }else{
+    if((teste_primatas$altura[i] > 122) & (teste_primatas$peso[i] <= 35)){
+      resultado[i] <- "bonobo"
+    }else{
+      resultado[i] <- "chimpanze"
+    }
+  }
+}
+proporcao_acertos <- mean(teste_primatas$especie == resultado)
+proporcao_acertos <- round(proporcao_acertos,2)
+paste("A acurácia é de", proporcao_acertos, "%")
