@@ -205,7 +205,6 @@ passeio2 <- function(L){
         return("L precisa ser maior que zero e menor que 20")
       }
     }
-    L <- 10               #defina aqui o valor de L
     fim <- passeio(L)
     resultados[j] <- c(fim)
   }
@@ -229,13 +228,72 @@ barplot(height = proporcao_L, names.arg = 1:19,
 
 #Exercicio 11
 #(a)
+explorar <- function(){
+  posicao <- c(0,0)
+  for(i in 1:8){
+    dado <- c("L","R","U","D")
+    lance <- sample(dado, 1, replace = TRUE)
+    if(lance == "L"){
+      posicao[1] <- posicao[1] - 1
+    }
+    if(lance == "R"){
+      posicao[1] <- posicao[1] + 1
+    }
+    if(lance == "U"){
+      posicao[2] <- posicao[2] + 1
+    }
+    if(lance == "D"){
+      posicao[2] <- posicao[2] - 1
+    }
+  }
+  return (posicao)
+}
+posicao <- explorar()
+posicao
 
 #(b)
+proporcao3 <- c()
+origem <- c(0,0)
+for(j in 1:10000){
+  posicao <- explorar()
+  if(identical(posicao,origem)){
+    proporcao3 <- c(proporcao3, 1)
+  }else{
+    proporcao3 <- c(proporcao3, 0)
+  }
+}
+proporcao3 <- mean(proporcao3)
+proporcao3
+
+#R: Link tem chance de voltar ao ponto de partida cerca de 7% das 10000 tentativas
 
 #(c)
+func2 <- function(N) {
+  if (N %% 2 == 0) {
+    proporcao4 <- numeric()
+    origem <- c(0, 0)
+    for (i in 1:N) {
+      posicao <- explorar()
+      if (all(posicao == origem)) {
+        proporcao4 <- c(proporcao4, 1)
+      } else {
+        proporcao4 <- c(proporcao4, 0)
+      }
+    }
+    proporcao4 <- mean(proporcao4)
+    return(paste("Link voltou à origem em", proporcao4*100, "% das vezes."))
+  } else {
+    return("Impossível retornar à origem pois o número de passos é ímpar.")
+  }
+}
+N <- 20
+proporcao4 <- func2(N)
+proporcao4
 
 
 #Exercicio 12
+
+
 
 
 #Exercicio 13
@@ -245,37 +303,38 @@ str(dados)
 #(a)
 ggplot(data = dados, mapping = aes(x = Genero)) +
   geom_bar()
-#É possível notar que a maioria das vítimas eram mulheres, com uma diferença de frequência bem discrepante em relação às vítimas que eram homens.
+#Observa-se que a maioria das vítimas eram mulheres, com uma diferença de frequência consideravelmente maior em comparação com as vítimas do sexo masculino.
 
 #(b)
 ggplot(data = dados, mapping = aes(x = Idade)) + 
   geom_histogram(bins = 8) +
   facet_wrap(~Genero)
-#O gráfico indica que a maioria das vítimas tinha entre 70 e 85 anos, independente de seu gênero.
+#O gráfico mostra que a maioria das vítimas estava na faixa etária de 70 a 85 anos, independentemente do gênero.
 
 #(c)
 ggplot(data = dados, mapping = aes(y = Idade)) +
   geom_boxplot()
-#O boxplot mostra que a maioria das vítimas tinha entre 70 e 85 anos, e, além disso, também é possível perceber que as vítimas mais novas tinham cerca de 55 anos, enquanto as mais velhas, 95. Poucas vítimas tinham menos que 55 anos.
+#O boxplot revela que a maior parte das vítimas tinha entre 70 e 85 anos. Nota-se ainda que as vítimas mais jovens tinham aproximadamente 55 anos, enquanto as mais idosas tinham em torno de 95 anos. Poucas vítimas possuíam menos de 55 anos.
 
 #(d)
 ggplot(data = dados, mapping = aes(x = LocalDaMorte)) +
   geom_bar()
-#A maioria das vítimas, mais de 200, foram assassinadas em suas casas. Cerca de 10 morreram no hospital, enquanto aproximadamente 5 morreram na casa de repouso.
+#A maior parte das vítimas, mais de 200 pessoas, foram assassinadas em suas residências. Cerca de 10 morreram no hospital e aproximadamente 5 faleceram na casa de repouso.
 
 #(e)
 ggplot(data = dados, mapping = aes(x = AnoDaMorte)) +
   geom_bar()
-#O número de assassinatos foi crescendo conforme o passar das décadas, sendo a década de 1990 a que contém o maior número de casos. No ano de 1997, houve mais de 40 vítimas.
+#O número de homicídios aumentou ao longo das décadas, sendo a década de 1990 a que registrou a maior quantidade de casos. Em 1997, foram contabilizadas mais de 40 vítimas.
 
 #(f)
-# A maioria das vítimas de Harold Shipman eram idosos com idades entre 70 e 85 anos, sobretudo mulheres. Shipman geralmente cometia os assassinatos nas casas das vítimas. Além disso, entre as décadas de 1970 e 1990, houve um aumento significativo no número de casos, sendo 1997 o ano com o maior número de vítimas registrado.
+# A maioria das vítimas de Harold Shipman era composta por idosos entre 70 e 85 anos, principalmente mulheres. Shipman costumava realizar os assassinatos nas residências das vítimas. Além disso, houve um crescimento expressivo no número de casos entre as décadas de 1970 e 1990, com 1997 registrando o maior número de vítimas.
 
 
 #Exercicio 14
 library(ggplot2)
 
 #(a)
+setwd("D:/Na UFU")
 primatas <- read.table(file = "primatas.txt", header = TRUE, sep = ":")
 str(primatas)
 summary(primatas)
